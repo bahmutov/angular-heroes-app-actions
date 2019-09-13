@@ -16,7 +16,7 @@ export class HeroesComponent implements OnInit {
     // @ts-ignore
     if (window.Cypress) {
       // @ts-ignore
-      window.heroes = this
+      window.HeroesComponent = this
     }
   }
 
@@ -28,6 +28,15 @@ export class HeroesComponent implements OnInit {
     this.heroService.getHeroes()
     .subscribe(heroes => this.heroes = heroes);
   }
+
+  // add(name: string) {
+  //   name = name.trim();
+  //   if (!name) { return }
+  //   this.heroService.addHero({ name } as Hero)
+  //   .subscribe(hero => {
+  //     this.heroes.push(hero);
+  //   })
+  // }
 
   add(name: string): Promise<void> {
     name = name.trim();
