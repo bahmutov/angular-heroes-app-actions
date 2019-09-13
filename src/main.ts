@@ -8,8 +8,7 @@ if (environment.production) {
   enableProdMode();
 }
 
-platformBrowserDynamic().bootstrapModule(AppModule);
-
+platformBrowserDynamic().bootstrapModule(AppModule)
 
 /*
 Copyright Google LLC. All Rights Reserved.

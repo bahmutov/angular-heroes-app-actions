@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ApplicationRef  } from '@angular/core';
 
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
@@ -11,7 +11,14 @@ import { HeroService } from '../hero.service';
 export class HeroesComponent implements OnInit {
   heroes: Hero[];
 
-  constructor(private heroService: HeroService) { }
+  constructor(private heroService: HeroService) {
+    // debugger
+    // @ts-ignore
+    if (window.Cypress) {
+      // @ts-ignore
+      window.heroes = this
+    }
+  }
 
   ngOnInit() {
     this.getHeroes();
@@ -22,13 +29,16 @@ export class HeroesComponent implements OnInit {
     .subscribe(heroes => this.heroes = heroes);
   }
 
-  add(name: string): void {
+  add(name: string): Promise<void> {
     name = name.trim();
-    if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
+    if (!name) { return Promise.resolve(); }
+    return new Promise((resolve) => {
+      this.heroService.addHero({ name } as Hero)
       .subscribe(hero => {
         this.heroes.push(hero);
+        resolve()
       });
+    })
   }
 
   delete(hero: Hero): void {
