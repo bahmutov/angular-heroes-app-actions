@@ -1,3 +1,6 @@
+import { ApplicationRef } from '@angular/core'
+import { Hero } from "app/hero"
+
 it('Returns deleted hero after reload', () => {
   cy.visit('/heroes')
   cy.get('ul.heroes li').should('have.length', 10)
@@ -12,12 +15,11 @@ it('Returns deleted hero after reload', () => {
     .first().should('include.text', 'Dr Nice')
 })
 
-it('Returns deleted hero after reload - with assertions against data', () => {
+it.only('Returns deleted hero after reload - with assertions against data', () => {
   cy.visit('/heroes')
   // confirm the data in the component
   getHeroes().should('have.length', 10)
-    // @ts-ignore
-    .its('0')
+    .then(list => list[0])
     .should('deep.equal', {
       id: 11,
       name: 'Dr Nice'
@@ -78,6 +80,7 @@ const getHeroesComponent = () =>
  */
 const getHeroes = () =>
   getHeroesComponent().should('have.property', 'heroes')
+  .then(list => <Hero[]><unknown>list) // make the type work
 
 /**
  * Sets the length of heroes array to 0
@@ -86,19 +89,18 @@ const clearHeroes = () =>
   getHeroes()
     .then(heroes => {
       cy.log(`clearing ${heroes.length} heroes`)
-      // @ts-ignore
       heroes.length = 0
     })
 
 const getAppRef = () =>
   cy.window().should('have.property', 'appRef')
+  .then(x => <ApplicationRef><unknown>x) // make the type work
 
 /**
  * Calls `appRef.tick()` to force UI refresh
 */
 const tick = () =>
   getAppRef()
-    // @ts-ignore
     .invoke('tick')
 
 it('starts with 10 heroes', () => {
@@ -115,7 +117,6 @@ Cypress.Commands.add('getHeroesComponent', () => {
 
 it('starts with 10 heroes (custom command)', () => {
   cy.visit('/heroes')
-  // @ts-ignore
   cy.getHeroesComponent()
     .should('have.property', 'heroes') // yields window.HeroesComponent.heroes array
     .should('have.length', 10)
@@ -123,7 +124,6 @@ it('starts with 10 heroes (custom command)', () => {
 
 it('sets zero heroes', () => {
   cy.visit('/heroes')
-  // @ts-ignore
   cy.getHeroesComponent()
     .should('have.property', 'heroes') // yields window.HeroesComponent.heroes array
     .should('have.length', 10)
@@ -167,7 +167,6 @@ it('deletes all heroes through app action', () => {
  */
 const addHero = (name: string) =>
   cy.window()
-    // @ts-ignore
     .its('HeroesComponent')
     .invoke('add', name)
 

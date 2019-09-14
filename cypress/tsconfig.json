@@ -2,6 +2,8 @@
   "extends": "../tsconfig.json",
   "include": [
     "*/*.ts",
-    "../node_modules/cypress"
+    "../node_modules/cypress",
+    "../src/index.d.ts",
+    "./support/index.d.ts"
   ]
 }

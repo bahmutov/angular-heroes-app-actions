@@ -12,10 +12,7 @@ export class HeroesComponent implements OnInit {
   heroes: Hero[];
 
   constructor(private heroService: HeroService) {
-    // debugger
-    // @ts-ignore
     if (window.Cypress) {
-      // @ts-ignore
       window.HeroesComponent = this
     }
   }

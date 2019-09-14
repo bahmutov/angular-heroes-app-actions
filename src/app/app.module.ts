@@ -44,10 +44,8 @@ import { MessagesComponent }    from './messages/messages.component';
 export class AppModule implements DoBootstrap {
   ngDoBootstrap(appRef: ApplicationRef) {
     appRef.bootstrap(AppComponent);
-    // @ts-ignore
     if (window.Cypress) {
       // and save the application reference
-      // @ts-ignore
       window.appRef = appRef
     }
   }
