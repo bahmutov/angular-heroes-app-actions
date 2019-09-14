@@ -1,3 +1,47 @@
+it('Returns deleted hero after reload', () => {
+  cy.visit('/heroes')
+  cy.get('ul.heroes li').should('have.length', 10)
+    .first().should('include.text', 'Dr Nice')
+    .find('.delete').click()
+  cy.get('ul.heroes li')
+    .should('have.length', 9).and('not.include.text', 'Dr Nice')
+  cy.reload()
+  // Dr Nice is back
+  cy.get('ul.heroes li')
+    .should('have.length', 10)
+    .first().should('include.text', 'Dr Nice')
+})
+
+it('Returns deleted hero after reload - with assertions against data', () => {
+  cy.visit('/heroes')
+  // confirm the data in the component
+  getHeroes().should('have.length', 10)
+    // @ts-ignore
+    .its('0')
+    .should('deep.equal', {
+      id: 11,
+      name: 'Dr Nice'
+    })
+  // confirm the UI
+  cy.get('ul.heroes li').should('have.length', 10)
+    .first().should('include.text', 'Dr Nice')
+    .find('.delete').click()
+  cy.get('ul.heroes li')
+    .should('have.length', 9).and('not.include.text', 'Dr Nice')
+  // confirm the data in the component
+  getHeroes()
+    // @ts-ignore
+    .its('0').should('deep.equal', {
+      id: 12,
+      name: 'Narco'
+    })
+  cy.reload()
+  // Dr Nice is back
+  cy.get('ul.heroes li')
+    .should('have.length', 10)
+    .first().should('include.text', 'Dr Nice')
+})
+
 it('shows Heroes and finds Bombasto', () => {
   cy.visit('/')
     .get('.module.hero').should('have.length', 4)
