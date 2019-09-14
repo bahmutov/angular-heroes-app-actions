@@ -1,3 +1,5 @@
-# angular-6bxzdx
+# Angular 8 app + Cypress tests using App Actions
 
-[Edit on StackBlitz ⚡️](https://stackblitz.com/edit/angular-6bxzdx)
+Read [Testing Angular application via App Actions](https://glebbahmutov.com/blog/testing-angular-application-via-app-actions/)
+
+Originally cloned from [https://github.com/chandramuralis/angular-cypress](https://github.com/chandramuralis/angular-cypress)
